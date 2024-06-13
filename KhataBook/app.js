@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   fs.readdir(`./files`, (err, files) => {
     res.render("index", { files });
-    console.log(files);
   });
 });
 
@@ -49,5 +48,13 @@ app.post("/update/:filename", (req, res) => {
     res.redirect("/");
   });
 });
+
+// deleting file
+app.get("/delete/:filename", (req, res) => {
+  fs.unlink(`./files/${req.params.filename}`, (err) => {
+    if(err) return res.send(err);
+    res.redirect("/")
+  })
+})
 
 app.listen(3000);
