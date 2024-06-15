@@ -33,14 +33,14 @@ nav{
 }
 
 nav h1{
-    font-size: 2vw;
+    font-size: 1.5vw;
 }
 
 .links{
     display: flex;
-    gap: 2vw;
+    gap: 3vw;
 }
 
 .links a{
-    font-size: 2vw;
+    font-size: 1.2vw;
 }
