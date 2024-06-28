@@ -46,27 +46,16 @@ function validateModel(data) {
 
     age: Joi.number().integer().min(18).max(120).required(),
 
-    contact: Joi.number().required().messages({
-      "any.required": "Age is required.",
-      "number.integer": "Age must be an integer.",
-      "number.min": "Age must be at least 18.",
-      "number.max": "Age cannot exceed 120.",
-    }),
+    contact: Joi.number().required(),
 
     email: Joi.string()
-      .regex(
-        /^(?=.{1,64}@)[A-Za-z0-9\.-]+@(?:[A-Za-z0-9-]+\.)+(com|net|edu)$/,
-        "Invalid email format. Please enter a valid email address."
-      )
-      .required("Email is required")
-      .custom((value, helpers) => {
-        const isValidEmail = checkEmail(value);
-        if (!isValidEmail) {
-          return helpers.error("any.invalid", "Email is not recognized.");
-        }
-        // If everything is okay, return the value unchanged
-        return value;
-      }, "Custom Email Validation"),
+      .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'org', 'edu'] } })
+      .required().pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)
+      .messages({
+          'any.required': 'Email is required.',
+          'string.email': 'Please enter a valid email address. Example: example@email.com or example@email.net or example@email.org or example@email.edu',  
+          'string.pattern.base': 'Please enter a valid email address. Example: example@email.comss'
+      }),
   });
 
   const { error } = schema.validate(data);
